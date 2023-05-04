@@ -1,0 +1,43 @@
+See [[https://github.com/noctuid/dotfiles/tree/master/remap][this readme]] for information on my layout.
+
+* Advanced Keycodes
+Using:
+- Mod-Tap/Tap-Hold - using for nearly all thumb keys; have enough thumb keys that don't need to use on home row keys
+- US ANSI shifted keycode - for sym layer
+
+Probably will use at some point:
+- Macros - for custom keycodes if need
+
+Not Using:
+- Command - just bind Quantum Keycodes directly
+- Dynamic Macros - software keyboard macros are better
+- Grave Escape - too specific; have dedicated thumbkey for escape
+- Leader Key - don't see a reason to use over layers
+- Programmable Button - don't have a use case for
+- Space Cadet Shift - too specific; use Mod-Tap
+
+* Software Features
+Using:
+- Caps Word - don't need the =-= to =_= translation but auto-disabling at non-word character is nice
+- Layers - obviously
+- Tap Dance - not for anything frequently used but to put quantum keycodes on a single key (nice to have to require double tap for bootloader/flash so I don't accidentally do that)
+- Tap-Hold - using for nearly all thumb keys
+
+Not using:
+- Auto Shift - using shift modifier is faster
+- Autocorrect - no, (re)type correctly; use software to correct spelling mistakes
+- Combos - currently no use for
+- Debounce API - only if default doesn't work (no issues so far)
+- Key Lock - no use case for; only really needs caps lock
+- Key Overrides - maybe for [/{ (like CharShift) but don't currently need
+- One Shot - no use case for
+- OS Detection - don't yet need
+- Raw HID - no use case for
+- Secure - don't need
+- Send String - not currently using
+- Sequencer - dont need
+- Swap Hands - I don't use one-hand typing
+- Tri Layer - no use case for
+- Unicode - it ends up using system software anyway
+- Userspace: Sharing Code Between Keymaps - only have one QMK keyboard currently
+- WPM Calculation - not necessary
