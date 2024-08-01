@@ -35,6 +35,8 @@ enum layers {
 #define C_BSPC C(KC_BACKSPACE)
 #define C_TAB C(KC_TAB)
 #define S_TAB S(KC_TAB)
+#define CS_TAB C(S(KC_TAB))
+
 
 #define KC_C_A C(KC_LALT)
 
@@ -62,10 +64,11 @@ tap_dance_action_t tap_dance_actions[] = {
 
 #define DB_FLASH TD(TD_DEBUG_FLASH)
 
-// * Dual-Role/Tap-Hold Keys
+// * Dual-Role/Tap-Hold Keys and Custom Functionality
 // tap-hold/dual-role aliases
 #define DR_CTL MT(MOD_LCTL, KC_TAB)
 #define DR_SFT MT(MOD_LSFT, KC_ESC)
+#define DR_NAVS LT(_NAV, KC_SPACE)
 // sxhkd hotkeys
 #define DR_HOT MT(MOD_LGUI | MOD_LCTL, KC_LEFT_BRACKET)
 
@@ -80,9 +83,9 @@ tap_dance_action_t tap_dance_actions[] = {
 #define DR_Z LT(_NAV, KC_Z)
 
 // to be able to access media previous on nav layer
-#define DR_SCAB MT(MOD_LSFT, S(C(KC_TAB)))
+#define DR_SCAB MT(MOD_LSFT, CS_TAB)
 
-// necessary since QMK's dual-role implementation is garbage
+// necessary since QMK's dual-role implementation is ...
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
     case DR_WIN:
@@ -94,13 +97,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
     case DR_ALT:
+        // necessary since mod-tap only supports basic keycodes by default
         if (record->tap.count && record->event.pressed) {
             tap_code16(KC_LEFT_CURLY_BRACE);
             // Return false to ignore further processing of key
             return false;
         }
         break;
+    case DR_SCAB:
+        // necessary since mod-tap only supports basic keycodes by default
+        if (record->tap.count && record->event.pressed) {
+            tap_code16(CS_TAB);
+            // Return false to ignore further processing of key
+            return false;
+        }
+        break;
+    /* case RGB */
     }
+    // also toggle
     return true;
 }
 
@@ -108,7 +122,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case DR_Z:
-            // do not immideatly select the hold action when another key is pressed
+            // do not immediately select the hold action when another key is pressed
+            return false;
+        case DR_NAVS:
+            // do not immediately select the hold action when another key is pressed
             return false;
         default:
             // select the hold action when another key is pressed
@@ -126,7 +143,19 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     NULL // Null terminate the array of overrides!
 };
 
+// * Custom Functions
+
 // * Default LED Color/Mode
+// disable liatris light by default
+int liatris_led_on = 0;
+void keyboard_pre_init_user(void) {
+    // Set our LED pin as output
+    setPinOutput(24);
+    // Turn the LED off
+    // (Due to technical reasons, high is off and low is on)
+    writePinHigh(24);
+}
+
 #ifdef RGBLIGHT_ENABLE
 void keyboard_post_init_user(void) {
   // set default dark orange breathing (does not look like how this would look in a color picker)
@@ -160,7 +189,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      RGB_MOD , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B   ,                                        KC_J  , KC_L  , KC_U  , KC_Y   ,KC_SCLN, KC_PPLS,
      RGB_TOG , KC_A   , KC_R   , KC_S   , KC_T   , KC_G   ,                                        KC_K  , KC_N  , KC_E  , KC_I   , KC_O  ,KC_QUOTE,
      DB_FLASH, _______, KC_X   , KC_C   , KC_D   , KC_V   , DR_Z  ,CW_TOGG,     FKEYS   , DR_RAT , KC_M  , KC_H  ,KC_COMM, KC_DOT ,KC_SLSH, _______,
-                                 ADJUST , DR_CTL , DR_SFT , KC_SPC, DR_HOT,     DR_WIN  , DR_NAV , DR_SYM, DR_ALT, KC_APP
+                                 ADJUST , DR_CTL , DR_SFT ,DR_NAVS, DR_HOT,     DR_WIN  , DR_NAV , DR_SYM, DR_ALT, KC_APP
 
     ),
 
@@ -243,7 +272,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_FUNCTION] = LAYOUT(
-     _______ , KC_F11 , KC_F12 , _______, _______, _______,                                     _______, KC_PWR , KC_SLEP, KC_WAKE, _______, _______,
+     _______ , _______, KC_F11 , KC_F12 , _______, _______,                                     _______, KC_PWR , KC_SLEP, KC_WAKE, _______, _______,
      _______ , KC_F1  , KC_F2  , KC_F3  , KC_F4  , _______,                                     _______, KC_F7  , KC_F8  , KC_F9  , KC_F10  , _______,
      _______ , _______, _______, _______, KC_F5  , _______, _______, _______, _______, _______, _______, KC_F6  , _______, _______, _______, _______,
                                  _______, _______, KC_C_A , _______, _______, _______, _______, _______, _______, _______
