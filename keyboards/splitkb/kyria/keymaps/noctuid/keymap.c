@@ -133,6 +133,17 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+// only allow double tap then hold to key-repeat for backspace
+uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case DR_NAV:
+            return QUICK_TAP_TERM;
+        default:
+            // disable by default
+            return 0;
+    }
+}
+
 // * Key Overrides
 // shift + next for previous
 const key_override_t media_next_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK);
