@@ -69,3 +69,7 @@
 // disable tapping then holding tap-hold keys to repeat tap action
 // occasionally using for backspace, so commented
 // #define QUICK_TAP_TERM 0
+// instead, define per-key and only allow for backspace (other wise a rapid
+// press of escape followed by holding it will repeat escape, which I would
+// never want, instead of shift)
+#define QUICK_TAP_TERM_PER_KEY
