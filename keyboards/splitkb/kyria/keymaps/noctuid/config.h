@@ -57,7 +57,8 @@
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 
 // don't treat mod tap keys specially; honor PERMISSIVE_HOLD
-#define IGNORE_MOD_TAP_INTERRUPT
+// this is now the default behavior
+// #define IGNORE_MOD_TAP_INTERRUPT
 
 // have tap-hold key act as hold (even if tapping term duration has not passed)
 // when another key overlaps completely, i.e. the other key is pressed and

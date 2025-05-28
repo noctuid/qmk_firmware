@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "os_detection.h"
 
 // * Layers
 enum layers {
@@ -88,6 +89,23 @@ tap_dance_action_t tap_dance_actions[] = {
 // necessary since QMK's dual-role implementation is ...
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+    case C_TAB:
+        os_variant_t os = detected_host_os();
+        if (record->event.pressed) {
+            if (os == OS_MACOS || os == OS_IOS) {
+                register_code16(G(KC_TAB));
+            } else {
+                register_code16(C(KC_TAB));
+            }
+        } else {
+            if (os == OS_MACOS || os == OS_IOS) {
+                unregister_code16(G(KC_TAB));
+            } else {
+                unregister_code16(C(KC_TAB));
+            }
+        }
+        // Return false to ignore further processing of key
+        return false;
     case DR_WIN:
         // necessary since mod-tap only supports basic keycodes by default
         if (record->tap.count && record->event.pressed) {
@@ -107,7 +125,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case DR_SCAB:
         // necessary since mod-tap only supports basic keycodes by default
         if (record->tap.count && record->event.pressed) {
-            tap_code16(CS_TAB);
+            os_variant_t os = detected_host_os();
+            if (os == OS_MACOS || os == OS_IOS) {
+                tap_code16(G(S(KC_TAB)));
+            } else {
+                tap_code16(C(S(KC_TAB)));
+            }
             // Return false to ignore further processing of key
             return false;
         }
@@ -149,9 +172,8 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
 const key_override_t media_next_key_override = ko_make_basic(MOD_MASK_SHIFT, KC_MEDIA_NEXT_TRACK, KC_MEDIA_PREV_TRACK);
 
 // This globally defines all key overrides to be used
-const key_override_t **key_overrides = (const key_override_t *[]){
-    &media_next_key_override,
-    NULL // Null terminate the array of overrides!
+const key_override_t *key_overrides[] = {
+    &media_next_key_override
 };
 
 // * Custom Functions
@@ -262,7 +284,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_SYM] = LAYOUT(
-     _______ , KC_GRV , KC_EQL , KC_RBRC, KC_UNDS, KC_BSLS,                                     KC_AT  , KC_MINS, KC_RPRN, KC_RCBR, KC_EXLM, _______,
+     QK_LLCK , KC_GRV , KC_EQL , KC_RBRC, KC_UNDS, KC_BSLS,                                     KC_AT  , KC_MINS, KC_RPRN, KC_RCBR, KC_EXLM, _______,
      _______ , KC_1   , KC_2   , KC_3   , KC_4   , KC_PIPE,                                     KC_AMPR, KC_7   , KC_8   , KC_9   , KC_0   , _______,
      _______ , _______, KC_TILD, KC_HASH, KC_5   , KC_CIRC, _______, _______, _______, _______, KC_DLR , KC_6   , KC_ASTR, KC_PLUS, KC_PERC, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
