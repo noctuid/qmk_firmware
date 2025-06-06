@@ -20,6 +20,8 @@
 enum layers {
     _COLEMAK_DHK = 0,
     _QWERTY,
+    _TEKKEN,
+    _FIGHT,
     _NAV,
     _SYM,
     _FUNCTION,
@@ -27,6 +29,8 @@ enum layers {
 };
 
 #define QWERTY DF(_QWERTY)
+#define TEKKEN DF(_TEKKEN)
+#define FIGHT DF(_FIGHT)
 #define COLEMAK DF(_COLEMAK_DHK)
 
 #define ADJUST MO(_ADJUST)
@@ -221,7 +225,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_COLEMAK_DHK] = LAYOUT(
      RGB_MOD , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B   ,                                        KC_J  , KC_L  , KC_U  , KC_Y   ,KC_SCLN, KC_PPLS,
      RGB_TOG , KC_A   , KC_R   , KC_S   , KC_T   , KC_G   ,                                        KC_K  , KC_N  , KC_E  , KC_I   , KC_O  ,KC_QUOTE,
-     DB_FLASH, _______, KC_X   , KC_C   , KC_D   , KC_V   , DR_Z  ,CW_TOGG,     FKEYS   , DR_RAT , KC_M  , KC_H  ,KC_COMM, KC_DOT ,KC_SLSH, _______,
+     DB_FLASH, _______, KC_X   , KC_C   , KC_D   , KC_V   , DR_Z  ,CW_TOGG,     FKEYS   , DR_RAT , KC_M  , KC_H  ,KC_COMM, KC_DOT ,KC_SLSH,KC_ENTER,
                                  ADJUST , DR_CTL , DR_SFT ,DR_NAVS, DR_HOT,     DR_WIN  , DR_NAV , DR_SYM, DR_ALT, KC_APP
 
     ),
@@ -236,15 +240,59 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * | Quantum|      |   X  |   C  |   V  |   B  | Nav/Z|CapsWd|  |F-keys|Rat/Dl|   N  |   M  | ,  < | . >  | /  ? |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |Adjust| LCTL | LSFT | Space|Hotkey|  | Super| Space| Sym  | Alt  | Menu |
- *                        |      | Tab  | Esc  |      |  [   |  |   (  |      | Enter|  {   |      |
+ *                        |Adjust| LCTL | LSFT | Space|  Alt |  | Super| Space| Sym  | Alt  | Menu |
+ *                        |      | Tab  | Esc  |      |      |  |   (  |      | Enter|  {   |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_QWERTY] = LAYOUT(
      RGB_MOD , KC_Q   , KC_W    , KC_E   , KC_R   , KC_T   ,                                        KC_Y  , KC_U  , KC_I  , KC_O   , KC_P  , KC_PPLS,
      RGB_TOG , KC_A   , KC_S    , KC_D   , KC_F   , KC_G   ,                                        KC_H  , KC_J  , KC_K  , KC_L   ,KC_SCLN,KC_QUOTE,
      DB_FLASH, _______, KC_X    , KC_C   , KC_V   , KC_B   , DR_NAV,CW_TOGG,     FKEYS   , DR_RAT , KC_N  , KC_M  ,KC_COMM, KC_DOT ,KC_SLSH, _______,
-                                  ADJUST , DR_CTL , DR_SFT , KC_SPC, DR_HOT,     DR_WIN  , KC_SPC , DR_SYM, DR_ALT, KC_APP
+                                  ADJUST , DR_CTL , DR_SFT , KC_SPC,KC_LALT,     DR_WIN  , KC_SPC , DR_SYM, DR_ALT, KC_APP
+
+    ),
+
+/*
+ * Base Layer: Tekken
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |RGB Next|   Q  |   W  |   E  |   R  |   T  |                              |   Y  |   U  |   I  |   O  |   P  |  KP +  |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * | RGB Tog|   A  |   S  |   D  |   F  |   G  |                              |   H  |   J  |   K  |   L  |  ; : |  ' "   |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * | Quantum|      |   X  |   C  |   V  |   B  | Nav/Z|CapsWd|  |F-keys|Rat/Dl|   N  |   M  | ,  < | . >  | /  ? |        |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        |Adjust| LCTL | LSFT | Space|Hotkey|  |   F  |   ,  |   S  |  Alt | Menu |
+ *                        |      | Tab  | Esc  |      |  [   |  |      |      |      |   {  |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_TEKKEN] = LAYOUT(
+     RGB_MOD , KC_Q   , KC_W    , KC_E   , KC_R   , KC_T   ,                                        KC_Y  , KC_U  , KC_I  , KC_O   , KC_P  , KC_PPLS,
+     RGB_TOG , KC_A   , KC_S    , KC_D   , KC_F   , KC_G   ,                                        KC_H  , KC_J  , KC_K  , KC_L   ,KC_SCLN,KC_QUOTE,
+     DB_FLASH, _______, KC_X    , KC_C   , KC_V   , KC_B   , DR_NAV,CW_TOGG,     FKEYS   , DR_SYM , KC_N  , KC_M  ,KC_COMM, KC_DOT ,KC_SLSH, _______,
+                                  ADJUST , DR_CTL , DR_SFT , KC_SPC, DR_HOT,     KC_F    , KC_COMM, KC_S  , DR_ALT, KC_APP
+
+    ),
+
+/*
+ * Base Layer: Fight
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |RGB Next|   Q  |   W  |   F  |   P  |   B  |                              |   J  |   L  |   U  |   Y  | ;  : |  KP +  |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * | RGB Tog|   A  |   R  |   S  |   T  |   G  |                              |   K  |   N  |   E  |   I  |   O  |  ' "   |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * | Quantum|      |   X  |   C  |   D  |   V  | Nav/Z|CapsWd|  |F-keys|Rat/Dl|   M  |   H  | ,  < | . >  | /  ? |        |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        |Adjust| LCTL | LSFT | Space|Hotkey|  |   R  |   M  |   T  | Alt  | Menu |
+ *                        |      | Tab  | Esc  |      |  [   |  |      |      |      |   {  |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_FIGHT] = LAYOUT(
+     RGB_MOD , KC_Q   , KC_T   , KC_S   , KC_R   , KC_B   ,                                        KC_J  , KC_L  , KC_U  , KC_Y   ,KC_SCLN, KC_PPLS,
+     RGB_TOG , KC_A   , KC_R   , KC_S   , KC_T   , KC_G   ,                                        KC_K  , KC_N  , KC_E  , KC_I   , KC_O  ,KC_QUOTE,
+     DB_FLASH, _______, KC_X   , KC_C   , KC_D   , KC_V   , DR_Z  ,CW_TOGG,     FKEYS   , DR_RAT , KC_M  , KC_H  ,KC_COMM, KC_DOT ,KC_SLSH, _______,
+                                 ADJUST , DR_CTL , KC_D   , KC_SPC, DR_HOT,     KC_R    , KC_M   , KC_T  , DR_ALT, KC_APP
 
     ),
 
@@ -315,9 +363,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Adjust Layer: Default layer settings, RGB, and other keyboard commands
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |QWERTY|      |      |      |      |                              |      |      |      |      |      |        |
+ * |        |QWERTY|      | FIGHT|      |      |                              |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      |      |      |      |      |                              | TOG  | HUI  | SAI  | VAI  | SPD+ |        |
+ * |        |      |      |      |TEKKEN|      |                              | TOG  | HUI  | SAI  | VAI  | SPD+ |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |        |      |      |Colmak| Debug|      |      |      |  |      |      |      | HUD  | SAD  | VAD  | SPD- |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
@@ -326,8 +374,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_ADJUST] = LAYOUT(
-      _______, QWERTY , _______, _______, _______, _______,                                    _______, _______, _______, _______, _______, _______,
-      _______, _______, _______, _______, _______, _______,                                    RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI, _______,
+      _______, QWERTY , _______, FIGHT  , _______, _______,                                    _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, TEKKEN , _______,                                    RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI, _______,
       _______, _______, _______, COLEMAK, DB_TOGG, _______,_______, _______, _______, _______, _______, RGB_HUD, RGB_SAD, RGB_VAD, RGB_SPD, _______,
                                  _______, _______, _______,_______, _______, _______, _______, _______, _______, _______
     ),
@@ -394,6 +442,12 @@ bool oled_task_user(void) {
         switch (get_highest_layer(layer_state|default_layer_state)) {
             case _QWERTY:
                 oled_write_P(PSTR("QWERTY\n"), false);
+                break;
+            case _TEKKEN:
+                oled_write_P(PSTR("TEKKEN\n"), false);
+                break;
+            case _FIGHT:
+                oled_write_P(PSTR("FIGHT\n"), false);
                 break;
             case _DVORAK:
                 oled_write_P(PSTR("Dvorak\n"), false);

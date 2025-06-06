@@ -5,6 +5,7 @@ ENCODER_ENABLE = no        # Enables the use of one or more encoders
 RGB_MATRIX_ENABLE = no     # Disable keyboard RGB matrix, as it is enabled by default on rev3
 # can't compile with this
 RGBLIGHT_ENABLE = no       # Enable keyboard RGB underglow
+LTO_ENABLE = no
 
 # extra features
 CAPS_WORD_ENABLE = yes
